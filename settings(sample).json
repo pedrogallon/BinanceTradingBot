@@ -1,5 +1,11 @@
 {
-    "api_key": "APIKEY",
-    "api_secret": "APISECRET",
-    "tickers": ["BTCUSDT","ETHUSDT","LTCUSDT","ADAUSDT","SOLUSDT"]
+  "api_key": "APIKEY",
+  "api_secret": "APISECRET",
+  "tickers": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "LTCUSDT",
+    "ADAUSDT",
+    "SOLUSDT"
+  ]
 }
