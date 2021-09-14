@@ -5,8 +5,9 @@ Created on Tue Sep 14 12:20:40 2021
 @author: Gallon-PC
 """
 
+import schedule
+import time
 from binance.client import Client
-from threading import Timer
 import json
 
 settingsFile = open('settings.json').read()
@@ -49,7 +50,9 @@ def checkPrices():
             
     
     oldPrices = currentPrices
-    t = Timer(10.0, checkPrices)
-    t.start()
-        
-checkPrices()
+    
+schedule.clear()
+schedule.every(10).seconds.do(checkPrices)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
