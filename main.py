@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Sep 14 12:20:40 2021
-
-@author: Gallon-PC
-"""
 
 import schedule
 import time
@@ -14,10 +9,10 @@ settingsFile = open('settings.json').read()
 settings = json.loads(settingsFile)
 
 client = Client(settings.get("api_key"), settings.get("api_secret"))
-res = client.get_account()
+account = client.get_account()
 
 print('-- ACCOUNT BALANCE --')
-for b in res.get('balances'):
+for b in account.get('balances'):
     if float(b.get('free')) > 0:
         print(b.get('asset') + ": " + b.get('free'))
 
@@ -39,7 +34,7 @@ def check_prices():
 
 
 schedule.clear()
-schedule.every(10).seconds.do(check_prices)
+schedule.every(10).minutes.do(check_prices)
 while True:
     schedule.run_pending()
     time.sleep(1)
