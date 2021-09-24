@@ -1,40 +1,44 @@
 # -*- coding: utf-8 -*-
 
-import schedule
-import time
-from binance.client import Client
-import json
+import utils
 
-settingsFile = open('settings.json').read()
-settings = json.loads(settingsFile)
-
-client = Client(settings.get("api_key"), settings.get("api_secret"))
-account = client.get_account()
-
-print('-- ACCOUNT BALANCE --')
-for b in account.get('balances'):
-    if float(b.get('free')) > 0:
-        print(b.get('asset') + ": " + b.get('free'))
+settings = utils.get_settings()
+client = utils.get_binance_client()
 
 currentPrices = client.get_all_tickers()
 oldPrices = currentPrices
 
+utils.print_binance_balance()
+
 
 def check_prices():
     print('\n-- CHECKING PRICES --')
-    global currentPrices
     global oldPrices
+    global currentPrices
     currentPrices = client.get_all_tickers()
+
+    tickers = []
+    for ticker in settings.get("tickers"):
+        tickers.append(ticker.get("symbol"))
+    print(tickers)
+
     for current, old in zip(currentPrices, oldPrices):
-        if current.get('symbol') in settings.get("tickers"):
-            print(current.get('symbol'))
-            increase_percent = (float(current.get('price')) - float(old.get('price'))) / float(old.get('price')) * 100
-            print(increase_percent)
+
+        if current.get('symbol') in tickers:
+            delta_percent = (float(current.get('price')) - float(old.get('price'))) / float(old.get('price')) * 100
+
+            percent_margin = 0.0
+            for ticker in settings.get("tickers"):
+                if ticker.get('symbol') == current.get('symbol'):
+                    percent_margin = ticker.get("percent_margin")
+
+            print(current.get('symbol') + ":\t" + "%.5f" % delta_percent + ("\t - Variação acima de " + str(percent_margin) if delta_percent > percent_margin else ""))
+
+            if delta_percent > percent_margin:
+                utils.send_message(current.get('symbol') + " teve variação de " + str(delta_percent))
+
     oldPrices = currentPrices
 
 
-schedule.clear()
-schedule.every(10).minutes.do(check_prices)
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+utils.schedule_every_minute(check_prices, 2)
+
