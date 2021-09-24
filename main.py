@@ -4,6 +4,7 @@ import utils
 
 settings = utils.get_settings()
 client = utils.get_binance_client()
+tickers = utils.get_tickers()
 
 currentPrices = client.get_all_tickers()
 oldPrices = currentPrices
@@ -17,11 +18,6 @@ def check_prices():
     global currentPrices
     currentPrices = client.get_all_tickers()
 
-    tickers = []
-    for ticker in settings.get("tickers"):
-        tickers.append(ticker.get("symbol"))
-    print(tickers)
-
     for current, old in zip(currentPrices, oldPrices):
 
         if current.get('symbol') in tickers:
@@ -32,13 +28,18 @@ def check_prices():
                 if ticker.get('symbol') == current.get('symbol'):
                     percent_margin = ticker.get("percent_margin")
 
-            print(current.get('symbol') + ":\t" + "%.5f" % delta_percent + ("\t - Variação acima de " + str(percent_margin) if delta_percent > percent_margin else ""))
+            print(current.get('symbol') + ":\t" + "%.5f" % delta_percent + ("\t - Variação acima de " + str(percent_margin) if abs(delta_percent) > percent_margin else ""))
 
-            if delta_percent > percent_margin:
+            if abs(delta_percent) > percent_margin:
                 utils.send_message(current.get('symbol') + " teve variação de " + str(delta_percent))
+
+            utils.insert_db_price_history(utils.get_time_unix(), current.get('symbol'), float(current.get('price')), delta_percent)
 
     oldPrices = currentPrices
 
 
-utils.schedule_every_minute(check_prices, 2)
+utils.schedule_every_minute(check_prices, 1)
+
+
+
 
