@@ -2,6 +2,10 @@
 
 import utils
 
+
+log = utils.get_logger()
+log.info("--APPLICATION STARTUP--")
+
 settings = utils.get_settings()
 client = utils.get_binance_client()
 tickers = utils.get_tickers()
@@ -13,7 +17,8 @@ utils.print_binance_balance()
 
 
 def check_prices():
-    print('\n-- CHECKING PRICES --')
+    log.info("check_prices running")
+    print("\n-- PRICE CHECK DELTA --")
     global oldPrices
     global currentPrices
     currentPrices = client.get_all_tickers()

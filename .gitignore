@@ -3,3 +3,4 @@ settings.json
 
 database/database.db
 testing.py
+logging.log
