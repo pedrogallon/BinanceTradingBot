@@ -38,10 +38,10 @@ def check_prices():
 
             if (abs(delta_percent) > ticker.get('percent_margin')) and current.get('symbol') == 'AXSUSDT':
                 if last_order == "BUY" and delta_percent < 0:
-                    utils.send_market_order("SELL", ticker.get('symbol'), ticker.get('percent_margin'))
+                    utils.send_market_order("SELL", ticker.get('symbol'), ticker.get('amount'))
                     last_order = "SELL"
                 elif last_order == "SELL" and delta_percent > 0:
-                    utils.send_market_order("BUY", ticker.get('symbol'), ticker.get('percent_margin'))
+                    utils.send_market_order("BUY", ticker.get('symbol'), ticker.get('amount'))
                     last_order = "BUY"
 
             utils.insert_db_price_history(utils.get_time_unix(), current.get('symbol'), float(current.get('price')), delta_percent)
