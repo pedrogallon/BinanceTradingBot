@@ -6,31 +6,38 @@
   "tickers": [
     {
       "symbol": "BTCUSDT",
-      "percent_margin": 0.5
+      "percent_margin": 0.5,
+      "amount": 0
     },
     {
       "symbol": "ETHUSDT",
-      "percent_margin": 0.5
+      "percent_margin": 0.5,
+      "amount": 0
     },
     {
       "symbol": "LTCUSDT",
-      "percent_margin": 0.5
+      "percent_margin": 0.5,
+      "amount": 0
     },
     {
       "symbol": "ADAUSDT",
-      "percent_margin": 0.5
+      "percent_margin": 0.5,
+      "amount": 0
     },
     {
       "symbol": "SOLUSDT",
-      "percent_margin": 0.5
+      "percent_margin": 0.5,
+      "amount": 0
     },
     {
       "symbol": "DOGEUSDT",
-      "percent_margin": 0.5
+      "percent_margin": 0.5,
+      "amount": 0
     },
     {
       "symbol": "AXSUSDT",
-      "percent_margin": 0.5
+      "percent_margin": 0.5,
+      "amount": 0
     }
   ]
 }

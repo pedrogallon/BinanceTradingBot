@@ -106,3 +106,11 @@ def get_logger():
                         ])
 
     return logging.getLogger()
+
+
+def get_ticker(symbol):
+    ticker = {}
+    for ticker in get_settings().get("tickers"):
+        if ticker.get('symbol') == symbol:
+            ticker = ticker
+    return ticker

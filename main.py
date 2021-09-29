@@ -31,19 +31,17 @@ def check_prices():
         if current.get('symbol') in tickers:
             delta_percent = (float(current.get('price')) - float(old.get('price'))) / float(old.get('price')) * 100
 
-            percent_margin = 0.0
-            for ticker in settings.get("tickers"):
-                if ticker.get('symbol') == current.get('symbol'):
-                    percent_margin = ticker.get("percent_margin")
+            ticker = utils.get_ticker(current.get('symbol'))
 
-            print(current.get('symbol') + ":\t" + "%.5f" % delta_percent + ("\t - Variação acima de " + str(percent_margin) if abs(delta_percent) > percent_margin else ""))
+            print(current.get('symbol') + ":\t" + "%.5f" % delta_percent + ("\t - Variação acima de "
+                + str(ticker.get('percent_margin')) if abs(delta_percent) > ticker.get('percent_margin') else ""))
 
-            if (abs(delta_percent) > percent_margin) and current.get('symbol') == 'AXSUSDT':
+            if (abs(delta_percent) > ticker.get('percent_margin')) and current.get('symbol') == 'AXSUSDT':
                 if last_order == "BUY" and delta_percent < 0:
-                    utils.send_market_order("SELL", current.get('symbol'), current.get('amount'))
+                    utils.send_market_order("SELL", ticker.get('symbol'), ticker.get('percent_margin'))
                     last_order = "SELL"
                 elif last_order == "SELL" and delta_percent > 0:
-                    utils.send_market_order("BUY", current.get('symbol'), current.get('amount'))
+                    utils.send_market_order("BUY", ticker.get('symbol'), ticker.get('percent_margin'))
                     last_order = "BUY"
 
             utils.insert_db_price_history(utils.get_time_unix(), current.get('symbol'), float(current.get('price')), delta_percent)
