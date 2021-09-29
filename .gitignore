@@ -1,2 +1,6 @@
 settings.json
 .idea/*
+
+database/database.db
+testing.py
+logging.log

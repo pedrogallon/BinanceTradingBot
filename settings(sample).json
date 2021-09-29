@@ -1,11 +1,36 @@
 {
-  "api_key": "APIKEY",
-  "api_secret": "APISECRET",
+  "binance_api_key": "APIKEY",
+  "binance_api_secret": "APISECRET",
+  "callmebot_api_key": "123456",
+  "callmebot_number":  "+5511900000000",
   "tickers": [
-    "BTCUSDT",
-    "ETHUSDT",
-    "LTCUSDT",
-    "ADAUSDT",
-    "SOLUSDT"
+    {
+      "symbol": "BTCUSDT",
+      "percent_margin": 0.5
+    },
+    {
+      "symbol": "ETHUSDT",
+      "percent_margin": 0.5
+    },
+    {
+      "symbol": "LTCUSDT",
+      "percent_margin": 0.5
+    },
+    {
+      "symbol": "ADAUSDT",
+      "percent_margin": 0.5
+    },
+    {
+      "symbol": "SOLUSDT",
+      "percent_margin": 0.5
+    },
+    {
+      "symbol": "DOGEUSDT",
+      "percent_margin": 0.5
+    },
+    {
+      "symbol": "AXSUSDT",
+      "percent_margin": 0.5
+    }
   ]
 }
