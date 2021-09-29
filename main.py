@@ -15,12 +15,15 @@ oldPrices = currentPrices
 
 utils.print_binance_balance()
 
+last_order = "BUY"
+
 
 def check_prices():
     log.info("check_prices running")
     print("\n-- PRICE CHECK DELTA --")
     global oldPrices
     global currentPrices
+    global last_order
     currentPrices = client.get_all_tickers()
 
     for current, old in zip(currentPrices, oldPrices):
@@ -35,8 +38,13 @@ def check_prices():
 
             print(current.get('symbol') + ":\t" + "%.5f" % delta_percent + ("\t - Variação acima de " + str(percent_margin) if abs(delta_percent) > percent_margin else ""))
 
-            if abs(delta_percent) > percent_margin:
-                utils.send_message(current.get('symbol') + " teve variação de " + str(delta_percent))
+            if (abs(delta_percent) > percent_margin) and current.get('symbol') == 'AXSUSDT':
+                if last_order == "BUY" and delta_percent < 0:
+                    utils.send_market_order("SELL", current.get('symbol'), current.get('amount'))
+                    last_order = "SELL"
+                elif last_order == "SELL" and delta_percent > 0:
+                    utils.send_market_order("BUY", current.get('symbol'), current.get('amount'))
+                    last_order = "BUY"
 
             utils.insert_db_price_history(utils.get_time_unix(), current.get('symbol'), float(current.get('price')), delta_percent)
 

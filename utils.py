@@ -81,9 +81,11 @@ def insert_db_price_history(time, symbol, price, delta):
 
 def send_market_order(type, ticker, amount):
     log = get_logger()
-    log.info("Sending market order: {} {} {}".format(type, amount, ticker ))
+    message = "Sending market order: {} {} {}".format(type, amount, ticker )
+    log.info(message)
+    send_message(message)
     try:
-        get_binance_client().create_test_order(
+        get_binance_client().create_order(
             symbol=ticker,
             side=type,
             type=ORDER_TYPE_MARKET,
