@@ -10,6 +10,10 @@ from binance.enums import *
 from binance.exceptions import *
 
 
+binance_client = {}
+settings = {}
+
+
 def get_time_string():
     return str(datetime.today())
 
@@ -26,12 +30,19 @@ def send_message(message):
 
 
 def get_settings():
-    return json.loads(open('settings.json').read())
+    global settings
+    if settings == {}:
+        settings = json.loads(open('settings.json').read())
+
+    return settings
 
 
 def get_binance_client():
-    settings = get_settings()
-    return Client(settings.get("binance_api_key"), settings.get("binance_api_secret"))
+    global binance_client
+    if binance_client == {}:
+        binance_client = Client(get_settings().get("binance_api_key"), get_settings().get("binance_api_secret"))
+
+    return binance_client
 
 
 def print_binance_balance():
@@ -47,7 +58,6 @@ def schedule_every_minute(function, interval):
     schedule.every(interval).minutes.do(function)
     while True:
         schedule.run_pending()
-        time.sleep(1)
 
 
 def get_tickers():
