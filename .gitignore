@@ -4,3 +4,8 @@ settings.json
 database/database.db
 testing.py
 logging.log
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
